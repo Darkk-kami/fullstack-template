@@ -1,0 +1,4 @@
+terraform/environment/dev/.terraform.lock.hcl
+terraform/environment/dev/.terraform/
+terraform/environment/dev/backend.tf
+backend/.env
