@@ -102,4 +102,4 @@ volumes:
 
 networks:
   app-network:
-    driver: local
+    driver: bridge

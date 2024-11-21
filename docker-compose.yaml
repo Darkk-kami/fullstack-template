@@ -65,8 +65,8 @@ services:
       - '443:443'
     volumes:
       - ./nginx/nginx-local.conf:/data/nginx/custom/http_top.conf
-      # - ./nginx/nginx.conf:/data/nginx/custom/http_top.conf
-      # - /etc/letsencrypt/:/etc/letsencrypt  
+      # - ./nginx/nginx.conf:/data/nginx/custom/http_top.conf 
+      - /etc/letsencrypt/:/etc/letsencrypt  
     depends_on:
       - frontend 
       - backend   
