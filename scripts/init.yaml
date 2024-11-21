@@ -1,0 +1,43 @@
+
+#cloud-config
+
+runcmd:
+  # Update and install Docker
+  - apt-get update
+  - curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+  - sh /tmp/get-docker.sh
+  - curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+
+  # Create the fullstack directory, initialize Git, and pull the repository
+  - mkdir -p /home/fullstack 
+  - cd /home/fullstack
+  - git init
+  - git pull https://github.com/Darkk-kami/fullstack-template.git
+
+  # Set domain variables
+  - DOMAIN=domain.com
+  - DOMAIN2=db.domain.com
+  - DOMAIN3=proxy.domain.com
+  - CERTPATH="/etc/letsencrypt"
+  
+  # Install Certbot
+  - apt-get install -y certbot
+  
+  # Create directories for Certbot and certificates
+  - mkdir -p /var/www/certbot
+  - mkdir -p $CERTPATH
+
+  # Download SSL parameters for Certbot
+  - curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem > "$CERTPATH/ssl-dhparams.pem"
+
+  # Obtain SSL certificates using Certbot
+  - certbot certonly --standalone \
+      --email $EMAIL \
+      -d $DOMAIN \
+      -d $DOMAIN2 \
+      -d $DOMAIN3 \
+      --rsa-key-size 4096 \
+      --agree-tos \
+      --no-eff-email
+
